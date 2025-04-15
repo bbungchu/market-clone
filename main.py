@@ -10,6 +10,18 @@ app = FastAPI()
 con = sqlite3.connect('db.db', check_same_thread=False)
 cur = con.cursor()
 
+cur.execute(f"""
+            CREATE TABLE IF NOT EXISTS items (
+	            id INTEGER PRIMARY KEY,
+	            title TEXT NOT NULL,
+	            image BLOB,
+	            price INTEGER NOT NULL,
+	            description TEXT,
+	            place TEXT NOT NULL,
+	            insertAt INTEGER NOT NULL
+            );
+            """)
+
 @app.post('/items')
 async def create_item(image: UploadFile,
                 title: Annotated[str,Form()],
